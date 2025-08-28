@@ -67,7 +67,7 @@
         <div class="review-card">
           <div class="review-rating">
 
-            {% for _ in review.rating %}
+            {% for _ in review.rating|range %}
               <i class="fa-solid fa-star"></i>
             {% endfor %}
 

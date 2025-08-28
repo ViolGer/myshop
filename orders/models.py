@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from products.models import JournalizedModel
+
+
 class Order(JournalizedModel):
     STATUSES = (
         ('pending', 'Pending'),

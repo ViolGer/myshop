@@ -1,4 +1,6 @@
 from django.contrib.auth.views import LoginView, LogoutView
+from django.views.generic import TemplateView
+
 from . import views
 from django.urls import path
 
@@ -12,5 +14,6 @@ urlpatterns = [
                                      ), name='login'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('account/', views.AccountView.as_view(), name='account'),
+    path('cart/', TemplateView.as_view(template_name='users/cart.html'), name='cart'),
 
 ]
