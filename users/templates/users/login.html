@@ -18,9 +18,9 @@
                     <div class="InputField">
                         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                         {{ field }}
-                        {% if field.errors %}
-                            <div class="error-message">{{ field.error|striptags }}</div>
-                        {% endif %}
+                        {% for error in field.errors %}
+                            <div class="error-message">{{ error }}</div>
+                        {% endfor %}
                     </div>
                 {% endfor %}
 

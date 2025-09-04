@@ -1,10 +1,9 @@
-from django.views.generic import CreateView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, FormView, TemplateView
+from django.views.generic import CreateView, TemplateView
 from .form import UserRegistrationForm
 
 
-class UserCreationView(CreateView):
+class UserCreateView(CreateView):
     form_class = UserRegistrationForm
     template_name = 'users/register.html'
     success_url = '/'

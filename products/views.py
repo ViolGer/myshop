@@ -1,4 +1,4 @@
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from products.models import Product, Review
 
 
@@ -14,3 +14,9 @@ class ProductDetailView(DetailView):
         context['reviews'] = Review.objects.filter(product=self.object)
         context['star_range'] = range(5)
         return context
+
+class ProductListView(ListView):
+    model = Product
+    queryset = Product.objects.filter(is_active=True).select_related("category")
+    template_name = "products/product_list.html"
+    context_object_name = "products"

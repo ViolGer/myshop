@@ -9,7 +9,7 @@
     <!-- Product Info Section -->
     <section class="product-details-section">
       <div class="product-image-container">
-        <img src="{{ product.image.url }} " alt="{{ product.name }}" class="product-image">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
       </div>
       <div class="product-info-column">
         <div class="product-title-price">
@@ -71,7 +71,7 @@
               <i class="fa-solid fa-star"></i>
             {% endfor %}
 
-            {% for _ in 5|subtract:review.rating %}
+            {% for _ in 5|subtract:review.rating|range %}
               <i class="fa-regular fa-star"></i>
             {% endfor %}
           </div>
