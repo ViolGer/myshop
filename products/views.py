@@ -1,4 +1,4 @@
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 from products.models import Product, Review
 
 
@@ -20,3 +20,6 @@ class ProductListView(ListView):
     queryset = Product.objects.filter(is_active=True).select_related("category")
     template_name = "products/product_list.html"
     context_object_name = "products"
+
+class GuidesRecipesView(TemplateView):
+    template_name = 'guides-recipes.html'
