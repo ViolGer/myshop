@@ -27,8 +27,8 @@
         </a>
         <nav class="header__nav">
             <ul>
-                <li><a href="home.html">Products</a></li>
-                <li><a href="guides-recipes.html">Guides & Recipes</a></li>
+                <li><a href="{% url 'products:product-list' %}">Products</a></li>
+                <li><a href="{% url 'products:guides-recipes' %}">Guides & Recipes</a></li>
                 <li><a href="#">Community</a></li>
                 <li><a href="#">Resources</a></li>
                 <li><a href="#">Contact</a></li>
@@ -41,7 +41,7 @@
             <a href="{% url 'users:account' %}" class="user-icon" aria-label="My Account">
                 <img src="{% static 'img/icons/User_alt.svg' %}" alt="User Account">
             </a>
-            <a href="{% url 'users:cart' %}" class="cart-icon" aria-label="Shopping Cart">
+            <a href="{% url 'cart:cart' %}" class="cart-icon" aria-label="Shopping Cart">
                 <img src="{% static 'img/icons/Shopping_bag.svg' %}" alt="Shopping Cart">
             </a>
         </div>
