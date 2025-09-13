@@ -1,0 +1,36 @@
+{% extends 'users/base.html' %}
+{% block content %}
+<div class="container" style="max-width:640px; padding:32px 0;">
+  <h1>Review about «{{ view.product.name }}»</h1>
+
+  {# флеш-сообщения, если ещё не добавила в base.html #}
+  {% if messages %}
+    <ul class="messages">
+      {% for m in messages %}<li class="message {{ m.tags }}">{{ m }}</li>{% endfor %}
+    </ul>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="InputField">
+      <label>Rating (1–5)</label>
+      {{ form.rating }}
+      {% if form.rating.errors %}<div class="error">{{ form.rating.errors.0 }}</div>{% endif %}
+    </div>
+    <div class="InputField">
+      <label>Comment</label>
+      {{ form.comment }}
+      {% if form.comment.errors %}<div class="error">{{ form.comment.errors.0 }}</div>{% endif %}
+    </div>
+
+    {% if form.non_field_errors %}
+      <div class="error">{{ form.non_field_errors.0 }}</div>
+    {% endif %}
+
+    <div class="ButtonGroup">
+      <button class="button button--primary" type="submit">Save</button>
+      <a class="button button--secondary" href="{{ view.product.get_absolute_url }}#reviews">Cansel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
