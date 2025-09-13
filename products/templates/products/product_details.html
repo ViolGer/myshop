@@ -2,6 +2,17 @@
 {% block content %}
 {% load static %}
 {% load my_filters %}
+{% get_media_prefix as MEDIA_URL %}
+
+{% if messages %}
+  <div class="flash-messages">
+    {% for message in messages %}
+      <div class="flash flash-{{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
 
 <!-- Main Content -->
 <main class="page-product">
@@ -22,17 +33,24 @@
         <div class="product-description">
           <p>{{ product.description }}</p>
         </div>
+
         <div class="cart-controls">
-          <button class="button button--primary add-to-cart-button" id="add-to-cart-btn">
-            <i class="fa-solid fa-cart-shopping"></i>
-            <span>Add to Cart</span>
-          </button>
-          <div class="quantity-counter is-hidden" id="quantity-counter">
-            <button class="quantity-btn" data-action="decrease" aria-label="Decrease quantity"><i class="fa-solid fa-minus"></i></button>
-            <span class="quantity-value">1 in cart</span>
-            <button class="quantity-btn" data-action="increase" aria-label="Increase quantity"><i class="fa-solid fa-plus"></i></button>
-          </div>
+          <form action="{% url 'cart:add' product.id %}" method="post" id="add-to-cart-form" class="cart-controls">
+            {% csrf_token %}
+            <input type="hidden" name="qty" id="qty-input" value="1">
+
+            <button type="submit" class="button button--primary add-to-cart-button" id="add-to-cart-btn">
+              <i class="fa-solid fa-cart-shopping"></i><span>Add to Cart</span>
+            </button>
+
+            <div class="quantity-counter is-hidden" id="quantity-counter">
+              <button class="quantity-btn" type="button" data-action="decrease"><i class="fa-solid fa-minus"></i></button>
+              <span class="quantity-value">1 in cart</span>
+              <button class="quantity-btn" type="button" data-action="increase"><i class="fa-solid fa-plus"></i></button>
+            </div>
+          </form>
         </div>
+
       </div>
     </section>
 
@@ -80,8 +98,9 @@
             <h4 class="review-heading">{{ review.comment }}</h4>
             <p class="review-text">{{ review.details }}</p>
           </div>
+
           <div class="review-author">
-            <img src="{{ review.user.avatar.url }}" alt="User avatar" class="author-avatar">
+            <img src="{{ review.user.image.url }}" alt="User avatar" class="author-avatar">
             <span class="author-name">{{ review.user.username }}</span>
           </div>
         </div>
@@ -90,48 +109,6 @@
         <p>No reviews yet</p>
         {% endfor %}
 
-        <!-- Review Card 1 -->
-        <div class="review-card">
-          <div class="review-rating">
-            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-          </div>
-          <div class="review-body">
-            <h4 class="review-heading">The Perfect Sweet Spot</h4>
-            <p class="review-text">60L is my favorite caramel malt. It's not too light and not too dark. It provides the perfect balance of sweetness and caramel flavor for my Amber Ales. The color comes out just gorgeous.</p>
-          </div>
-          <div class="review-author">
-            <img src="{% static 'img/avatars/avatar1.svg' %}" alt="User avatar" class="author-avatar">
-            <span class="author-name">AmberAleFanatic</span>
-          </div>
-        </div>
-        <!-- Review Card 2 -->
-        <div class="review-card">
-          <div class="review-rating">
-            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-          </div>
-          <div class="review-body">
-            <h4 class="review-heading">Never Brew Without It</h4>
-            <p class="review-text">I add a bit of C60 to almost every recipe. It improves head retention and gives the beer a finished quality that's hard to achieve otherwise. Works great in IPAs to balance the bitterness.</p>
-          </div>
-          <div class="review-author">
-            <img src="{% static 'img/avatars/avatar2.svg' %}" alt="User avatar" class="author-avatar">
-            <span class="author-name">BrewMore</span>
-          </div>
-        </div>
-        <!-- Review Card 3 -->
-        <div class="review-card">
-          <div class="review-rating">
-            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-          </div>
-          <div class="review-body">
-            <h4 class="review-heading">Consistent and Reliable</h4>
-            <p class="review-text">The quality of this malt is always top-notch. Consistent color, wonderful aroma when crushed. If a recipe calls for Crystal 60, this is the one I always reach for. Recommended.</p>
-          </div>
-          <div class="review-author">
-            <img src="{% static 'img/avatars/avatar3.svg' %}" alt="User avatar" class="author-avatar">
-            <span class="author-name">ConsistentBrewer</span>
-          </div>
-        </div>
       </div>
     </section>
   </div>
