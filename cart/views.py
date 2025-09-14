@@ -1,8 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views import View
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.urls import reverse
 from  .models import Cart
 from products.models import Product
 
@@ -60,3 +61,22 @@ def _redirect_back_or_cart(request):
     if referer and request.get_host() in referer:
         return redirect(referer)
     return redirect("cart:cart")
+
+
+class CheckoutView(LoginRequiredMixin, View):
+    login_url = "login"
+
+    def get(self, request):
+        cart = request.session.get("cart", {})
+        return render(request, "cart/checkout.html", {"cart": cart})
+
+    def post(self, request):
+        request.session["cart"] = {}
+        messages.success(request, "Your order has been placed.")
+        return redirect("cart:checkout_success")
+
+class CheckoutSuccessView(LoginRequiredMixin, View):
+    login_url = "login"
+
+    def get(self, request):
+        return render(request, "cart/checkout_success.html")
