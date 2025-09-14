@@ -1,0 +1,26 @@
+from django.contrib.auth import get_user_model
+from django.db import models
+
+from products.models import JournalizedModel
+
+
+class Order(JournalizedModel):
+    STATUSES = (
+        ('pending', 'Pending'),
+        ('paid', 'Paid'),
+        ('shipped', 'Shipped'),
+        ('delivered', 'Delivered'),
+        ('cancelled', 'Cancelled'),
+    )
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    status = models.CharField(max_length=20, choices=STATUSES,
+                              default='pending')
+    total_price = models.DecimalField(max_digits=8, decimal_places=2)
+    shipping_address = models.TextField(max_length=200)
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey('products.Product', on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+

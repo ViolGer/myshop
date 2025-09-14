@@ -1,0 +1,124 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% load paginator_extras %}
+
+{% block content %}
+
+<!-- Main Content -->
+<main>
+    <section class="hero-banner">
+        <img src="{% static 'img/background/hopfen-fields.jpg' %}" alt="Beautiful hops on a dark background" class="hero-banner__image">
+        <div class="hero-banner__overlay"></div>
+    </section>
+
+    <div class="container main-content-grid">
+        <aside class="sidebar filter-menu">
+            <div class="sidebar__section">
+                <h3 class="section-title">Keywords</h3>
+                <div class="keywords-list">
+                </div>
+            </div>
+
+            <div class="sidebar__section">
+                <h3 class="section-title">Categories</h3>
+                <div class="checkbox-group">
+                    {% for category in categories %}
+                    <label class="checkbox-container">{{ category.name }}
+                        <input type="checkbox" data-keyword="{{ category.slug }}">
+                        <span class="checkmark"></span>
+                    </label>
+                    {% empty %}
+                    <p>No categories found.</p>
+                    {% endfor %}
+                </div>
+                <button class="button button--primary" id="filter-button">Filter</button>
+            </div>
+        </aside>
+
+        <section class="products-area product-grid-section">
+            <div class="search-sort-bar">
+                <form id="product-search-form" method="get" class="search-input-wrapper">
+                  <input type="search" name="q" class="search-input"
+                         placeholder="Search" value="{{ request.GET.q|default:'' }}">
+                  <button type="submit" class="search-button" aria-label="Search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                  </button>
+                </form>
+
+                <div class="sort-options">
+                    <button class="sort-button active-sort" type="button" data-sort="newest">
+                        <span>New</span>
+                    </button>
+                    <button class="sort-button" type="button" data-sort="price_asc">Price ascending</button>
+                    <button class="sort-button" type="button" data-sort="price_desc">Price descending</button>
+                    <button class="sort-button" type="button" data-sort="rating_desc">Rating</button>
+                </div>
+            </div>
+
+            <div class="product-grid">
+                {% for product in products|default:page_obj.object_list %}
+
+                <!-- Card 1: Citra Hops -->
+                <a href="{% url 'products:product-detail' product.slug %}" class="product-card-link">
+                    <div class="product-card">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-card__image">
+                        <div class="product-card__info">
+                            <h4 class="product-card__name">{{ product.name }}</h4>
+                            <p class="product-card__price">${{ product.price }}</p>
+                            <p class="product-card__price">⭐{{ product.avg_rating | default:'-' }}</p>
+                            <p class="product-card__description">{{ product.description|truncatechars:70}}</p>
+                        </div>
+                    </div>
+                </a>
+                {% empty %}
+                <p>No products found.</p>
+                {% endfor %}
+            </div>
+
+
+        {% if page_obj.paginator.num_pages > 1 %}
+        <div class="pagination" aria-label="Pagination">
+
+            <a href="{% page_url 1 %}" class="pagination__link pagination__link--first">&laquo; first</a>
+          {% if page_obj.has_previous %}
+            <a href="{% page_url page_obj.previous_page_number %}"
+               class="pagination__link pagination__link--prev" rel="prev">
+              <i class="fa-solid fa-arrow-left"></i><span>Previous</span>
+            </a>
+          {% else %}
+            <span class="pagination__link pagination__link--prev is-disabled" aria-disabled="true">
+              <i class="fa-solid fa-arrow-left"></i><span>Previous</span>
+            </span>
+          {% endif %}
+
+          <div class="pagination-list">
+            {% with pages=elided_page_range|default:page_obj.paginator.page_range %}
+              {% for item in pages %}
+                {% if item == '…' or item == '...' %}
+                  <span class="pagination__dots">…</span>
+                {% elif item == page_obj.number %}
+                  <span class="pagination__link active" aria-current="page">{{ item }}</span>
+                {% else %}
+                  <a href="{% page_url item %}" class="pagination__link">{{ item }}</a>
+                {% endif %}
+              {% endfor %}
+            {% endwith %}
+          </div>
+
+          {% if page_obj.has_next %}
+            <a href="{% page_url page_obj.next_page_number %}"
+               class="pagination__link pagination__link--next" rel="next">
+              <span>Next</span><i class="fa-solid fa-arrow-right"></i>
+            </a>
+          {% else %}
+            <span class="pagination__link pagination__link--next is-disabled" aria-disabled="true">
+              <span>Next</span><i class="fa-solid fa-arrow-right"></i>
+            </span>
+          {% endif %}
+          <a href="{% page_url page_obj.paginator.num_pages %}" class="pagination__link pagination__link--last">last &raquo;</a>
+        </div>
+            {% endif %}
+        </section>
+    </div>
+</main>
+{% endblock %}
