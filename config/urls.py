@@ -6,7 +6,7 @@ from config import settings
 from products.views import ProductListView
 
 urlpatterns = [
-    path('', ProductListView.as_view(), name='home'),
+    path('', ProductListView.as_view(), name='product_list'),
     path('admin/', admin.site.urls),
     path('users/', include('users.urls', namespace='users')),
     path('products/', include('products.urls', namespace='products')),

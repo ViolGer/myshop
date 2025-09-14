@@ -90,6 +90,8 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'products:product_list'
+LOGOUT_REDIRECT_URL = 'products:product_list'
 
 
 MEDIA_ROOT = BASE_DIR / 'media'

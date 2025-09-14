@@ -6,7 +6,7 @@ from .form import UserRegistrationForm
 class UserCreateView(CreateView):
     form_class = UserRegistrationForm
     template_name = 'users/register.html'
-    success_url = '/'
+    success_url = 'products:product_list'
 
 
 class AccountView(LoginRequiredMixin, TemplateView):

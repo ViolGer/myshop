@@ -9,7 +9,7 @@ app_name = 'users'
 urlpatterns = [
     path('register/', UserCreateView.as_view(), name='register'),
     path('login/', LoginView.as_view(template_name='users/login.html',
-                                     next_page=reverse_lazy('users:home'),
+                                     next_page=reverse_lazy('product_list'),
                                      ), name='login'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('account/', AccountView.as_view(), name='account'),
