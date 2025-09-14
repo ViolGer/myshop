@@ -21,7 +21,7 @@
 <!-- Header -->
 <header>
     <div class="header-container">
-        <a href="home.html" class="header__logo">
+        <a href="{% url 'home' %}" class="header__logo">
             <img src="{% static 'img/logo.svg' %}" alt="Hop & Barley Logo">
             <p class="logo-text">Hop & Barley</p>
         </a>
@@ -78,6 +78,6 @@
 </footer>
 
 <!-- Link to your main JavaScript file -->
-<script src="{% static 'js/main.js' %}"></script>
+<script src="{% static 'js/main.js' %}" defer></script>
 </body>
 </html>

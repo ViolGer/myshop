@@ -72,6 +72,7 @@ class Review(models.Model):
         verbose_name = 'review'
         verbose_name_plural = 'reviews'
         ordering = ['-created_at']
+        unique_together = ('product', 'user')
 
     def __str__(self):
         return f'{self.rating} - {self.comment}'
