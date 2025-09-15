@@ -1,6 +1,7 @@
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import PasswordResetView
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, TemplateView
 from rest_framework.reverse import reverse_lazy
@@ -32,3 +33,9 @@ def edit_profile_view(request):
 @login_required
 def profile_view(request):
     return render(request, 'users/profile.html')
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'users/forgot_password.html'
+    email_template_name = 'users/password_reset_email.html'
+    subject_template_name = 'users/password_reset_subject.txt'
+    success_url = reverse_lazy('users:password_reset_done')
