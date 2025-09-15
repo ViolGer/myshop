@@ -1,0 +1,43 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}My profile{% endblock %}
+
+{% block content %}
+<section class="page-section">
+  <div class="container account-form-container">
+
+    <div class="account-header">
+      <div class="account-avatar">
+        {% if user.image %}
+          <img src="{{ user.image.url }}" alt="{{ user.username }}">
+        {% else %}
+          <img src="{% static 'img/avatar-default.png' %}" alt="avatar">
+        {% endif %}
+      </div>
+      <div class="account-header-text">
+        <h1 class="account-form-title">My Profile</h1>
+        <p class="muted">@{{ user.username }}</p>
+      </div>
+      <div class="account-actions">
+        <a href="{% url 'users:edit_profile' %}" class="button button--primary">Edit profile</a>
+        <form action="{% url 'users:logout' %}" method="post" style="display:inline">
+          {% csrf_token %}
+          <button type="submit" class="button button--secondary">Logout</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="account-cards">
+      <div class="account-card">
+        <h3>Personal Info</h3>
+        <div class="info-row"><span>Full name</span><strong>{{ user.first_name }} {{ user.last_name }}</strong></div>
+        <div class="info-row"><span>Email</span><strong>{{ user.email }}</strong></div>
+        <div class="info-row"><span>Phone</span><strong>{{ user.phone|default:"—" }}</strong></div>
+        <div class="info-row"><span>Username</span><strong>{{ user.username }}</strong></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

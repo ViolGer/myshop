@@ -1,0 +1,91 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}Edit profile{% endblock %}
+
+{% block content %}
+<section class="page-section">
+  <div class="container account-form-container">
+
+    <!-- Заголовок и компактный аватар -->
+    <div class="account-header">
+      <div class="account-avatar">
+        {% if user.image %}
+          <img src="{{ user.image.url }}" alt="{{ user.username }}">
+        {% else %}
+          <img src="{% static 'img/avatar-default.png' %}" alt="avatar">
+        {% endif %}
+      </div>
+      <div class="account-header-text">
+        <h1 class="account-form-title">Edit Profile</h1>
+        <p class="muted">@{{ user.username }}</p>
+      </div>
+    </div>
+
+    <!-- Форма -->
+    <form method="post" enctype="multipart/form-data" class="account-card edit-form">
+      {% csrf_token %}
+      {% if user_form.non_field_errors %}
+        <div class="form-errors">{{ user_form.non_field_errors }}</div>
+      {% endif %}
+
+      <div class="form-two-col">
+        <div class="checkout-form-group">
+          <label for="{{ user_form.first_name.id_for_label }}">First name</label>
+          {{ user_form.first_name }}
+          {{ user_form.first_name.errors }}
+        </div>
+        <div class="checkout-form-group">
+          <label for="{{ user_form.last_name.id_for_label }}">Last name</label>
+          {{ user_form.last_name }}
+          {{ user_form.last_name.errors }}
+        </div>
+      </div>
+
+      <div class="checkout-form-group">
+        <label for="{{ user_form.username.id_for_label }}">Username</label>
+        {{ user_form.username }}
+        {{ user_form.username.errors }}
+      </div>
+
+      <div class="checkout-form-group">
+        <label for="{{ user_form.email.id_for_label }}">Email</label>
+        {{ user_form.email }}
+        {{ user_form.email.errors }}
+      </div>
+
+      <div class="checkout-form-group">
+        <label for="{{ user_form.phone.id_for_label }}">Phone number</label>
+        {{ user_form.phone }}
+        {{ user_form.phone.errors }}
+      </div>
+
+      <!-- Аватар: превью + кнопка выбора файла -->
+      <div class="checkout-form-group">
+        <label>Avatar</label>
+        <div class="avatar-upload">
+          <div class="avatar-preview">
+            {% if user.image %}
+              <img src="{{ user.image.url }}" alt="{{ user.username }}">
+            {% else %}
+              <img src="{% static 'img/avatar-default.png' %}" alt="avatar">
+            {% endif %}
+          </div>
+
+          <!-- Кнопка, которая кликает скрытый input[type=file] -->
+          <label for="id_avatar" class="button button--secondary upload-label">Choose file</label>
+          {{ user_form.image }} {# Должен быть widgets.FileInput(id='id_avatar') в форме #}
+        </div>
+        {{ user_form.image.errors }}
+      </div>
+
+      <div class="form-buttons">
+        <button type="submit" class="button button--primary button--full-width">Save</button>
+        <a href="{% url 'users:profile' %}" class="button button--secondary button--full-width">Cancel</a>
+      </div>
+    </form>
+
+  </div>
+</section>
+
+{% endblock %}
