@@ -76,40 +76,90 @@
     </section>
 
     <!-- Latest Reviews Section -->
-    <section class="reviews-section">
-      <h2 class="reviews-title">Latest reviews</h2>
+   <section class="reviews-section">
+  <h2 class="reviews-title">Latest reviews</h2>
 
-      <div class="reviews-grid">
+  <div class="reviews-layout">
+    {# LEFT: reviews list #}
+    <div class="reviews-col">
+      <div class="reviews-list">
         {% for review in reviews %}
-        <div class="review-card">
-          <div class="review-rating">
+          <article class="review-card">
+            <img src="{{ review.user.image.url }}"
+                 alt="{{ review.user.username }}"
+                 class="review-avatar-float">
 
-            {% for _ in review.rating|range %}
-              <i class="fa-solid fa-star"></i>
-            {% endfor %}
-
-            {% for _ in 5|subtract:review.rating|range %}
-              <i class="fa-regular fa-star"></i>
-            {% endfor %}
-          </div>
-
-          <div class="review-body">
-            <h4 class="review-heading">{{ review.comment }}</h4>
+            <h4 class="review-title">{{ review.comment }}</h4>
             <p class="review-text">{{ review.details }}</p>
-          </div>
 
-          <div class="review-author">
-            <img src="{{ review.user.image.url }}" alt="User avatar" class="author-avatar">
-            <span class="author-name">{{ review.user.username }}</span>
+            {# stars moved down #}
+            <div class="review-rating">
+              {% for _ in review.rating|range %}<i class="fa-solid fa-star"></i>{% endfor %}
+              {% for _ in 5|subtract:review.rating|range %}<i class="fa-regular fa-star"></i>{% endfor %}
+            </div>
+
+            <div class="review-author-under">{{ review.user.username }}</div>
+          </article>
+        {% empty %}
+          <p class="muted">No reviews yet — be the first to write one!</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    {# RIGHT: add-review form #}
+    <aside class="reviews-form-col">
+      {% if user.is_authenticated %}
+        <div class="card">
+          <h3 class="card-title">Add a review</h3>
+          <p class="card-subtitle">Share your experience with this product.</p>
+
+          <form method="post" action="" class="review-form" novalidate>
+            {% csrf_token %}
+
+            <div class="InputField">
+              <label for="id_comment" class="label">Title</label>
+              <input id="id_comment" name="comment" class="Input" type="text"
+                     placeholder="Short summary (optional)">
+            </div>
+
+            <div class="InputField">
+              <label for="id_details" class="label">Your review</label>
+              <textarea id="id_details" name="details" class="Input" rows="4"
+                        placeholder="What did you like or dislike?"></textarea>
+            </div>
+
+            {# stars moved to bottom #}
+            <div class="InputField">
+              <label class="label">Rating</label>
+              <div class="rating-stars">
+                <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="5 stars"></label>
+                <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 stars"></label>
+                <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 stars"></label>
+                <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 stars"></label>
+                <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="1 star"></label>
+              </div>
+            </div>
+
+            <div class="ButtonGroup ButtonGroup--center">
+              <button type="submit" class="button button--primary btn-compact">Submit review</button>
+            </div>
+          </form>
+        </div>
+      {% else %}
+        <div class="card">
+          <p class="card-subtitle">Please log in to write a review.</p>
+          <div class="ButtonGroup ButtonGroup--center">
+            <a class="button button--primary btn-compact"
+               href="{% url 'users:login' %}?next={{ request.path }}#reviews">Sign in</a>
           </div>
         </div>
+      {% endif %}
+    </aside>
+  </div>
+</section>
 
-        {% empty %}
-        <p>No reviews yet</p>
-        {% endfor %}
 
-      </div>
-    </section>
+
   </div>
 </main>
 

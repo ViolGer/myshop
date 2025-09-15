@@ -6,7 +6,7 @@ from products.forms import ReviewForm
 from products.models import Product, Review, Category
 from django.db import transaction
 from django.contrib import messages
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 
 class ProductDetailView(DetailView):
@@ -29,6 +29,26 @@ class ProductDetailView(DetailView):
         context['reviews'] = Review.objects.filter(product=self.object)
         context['star_range'] = range(5)
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()  # получаем product
+        if not request.user.is_authenticated:
+            messages.info(request, "Please sign in to add a review.")
+            return redirect(f"{self.object.get_absolute_url()}#reviews")
+
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.product = self.object
+            review.save()
+            messages.success(request, "Thanks for your review!")
+            return redirect(f"{self.object.get_absolute_url()}#reviews")
+
+        # если ошибки — показать форму с ошибками
+        ctx = self.get_context_data()
+        ctx["review_form"] = form
+        return self.render_to_response(ctx)
 
 
 class ProductListView(ListView):
