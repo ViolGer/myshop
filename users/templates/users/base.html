@@ -21,7 +21,7 @@
 <!-- Header -->
 <header>
     <div class="header-container">
-        <a href="{% url 'home' %}" class="header__logo">
+        <a href="{% url 'product_list' %}" class="header__logo">
             <img src="{% static 'img/logo.svg' %}" alt="Hop & Barley Logo">
             <p class="logo-text">Hop & Barley</p>
         </a>
@@ -38,11 +38,15 @@
         {% if user.is_authenticated %}
         <!-- Block for authorized user -->
         <div class="header__user-actions" id="auth-user">
-            <a href="{% url 'users:account' %}" class="user-icon" aria-label="My Account">
-                <img src="{% static 'img/icons/User_alt.svg' %}" alt="User Account">
+            <a href="{% url 'users:profile' %}" class="user-avatar-link" aria-label="My Profile" title="My Profile">
+              {% if user.image %}
+                <img class="user-avatar" src="{{ user.image.url }}" alt="{{ user.username }}">
+              {% else %}
+                <img class="user-avatar" src="{% static 'img/avatar-default.png' %}" alt="{{ user.username }}">
+              {% endif %}
             </a>
             <a href="{% url 'cart:cart' %}" class="cart-icon" aria-label="Shopping Cart">
-                <img src="{% static 'img/icons/Shopping_bag.svg' %}" alt="Shopping Cart">
+                <img src="{% static 'img/icons/hb.png' %}" alt="Shopping Cart">
             </a>
         </div>
         {% else %}

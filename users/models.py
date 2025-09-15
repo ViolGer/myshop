@@ -1,6 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+def user_avatar_path(instance, filename):
+    return f'image/user_{instance.user.id}/{filename}'
+
 class User(AbstractUser):
 
     USERNAME_FIELD = 'email'
