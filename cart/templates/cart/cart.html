@@ -44,7 +44,6 @@
                   <form action="{% url 'cart:update' i.product.id %}" method="post" style="display:inline;">
                     {% csrf_token %}
                     <input type="number" name="qty" min="0" value="{{ i.quantity }}" class="quantity-value-cart" style="width:56px;text-align:center;">
-                    <button class="button button--tiny" style="margin-left:6px;"></button>
                   </form>
 
                   {# +1: add с qty=1 #}

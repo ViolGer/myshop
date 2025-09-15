@@ -1093,6 +1093,25 @@ body.user-logged-in .header__user-actions {
     Cart Controls & Quantity Counter
 ========================================
 */
+/* Убираем встроенные стрелки у number input */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield; /* Firefox */
+    appearance: textfield;      /* Новый стандарт */
+}
+
+/* Центрируем цифру и делаем её ровной по вертикали */
+.cart-quantity input[type=number] {
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 1rem;
+    line-height: 1.2;
+}
+
 .cart-controls {
     width: 304px;
     height: 40px;
