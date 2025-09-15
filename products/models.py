@@ -50,7 +50,7 @@ class Product(JournalizedModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('products:product', kwargs={'slug': self.slug})
+        return reverse('products:product-detail', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         if self.name:
