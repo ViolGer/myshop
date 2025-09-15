@@ -2,6 +2,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, reverse_lazy
 from django.views.generic import TemplateView
 
+from .form import StyledSetPasswordForm
 from .views import UserCreateView, AccountView
 from . import views
 from django.contrib.auth import views as auth_views
@@ -22,7 +23,8 @@ urlpatterns = [
 
     path('reset/<uidb64>/<token>/',
          auth_views.PasswordResetConfirmView.as_view(
-             template_name='users/password_reset_confirm.html'
+             template_name='users/password_reset_confirm.html',
+             form_class=StyledSetPasswordForm,
          ),
          name='password_reset_confirm'),
 
