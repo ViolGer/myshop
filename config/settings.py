@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
+from telnetlib import LOGOUT
 
-from django.conf.global_settings import AUTH_USER_MODEL, MEDIA_ROOT, MEDIA_URL, STATIC_ROOT, STATICFILES_DIRS
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -90,8 +90,9 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'products:product_list'
-LOGOUT_REDIRECT_URL = 'products:product_list'
+LOGIN_REDIRECT_URL = '/products/'
+LOGOUT_REDIRECT_URL = '/products/'
+
 
 
 MEDIA_ROOT = BASE_DIR / 'media'

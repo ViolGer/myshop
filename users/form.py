@@ -26,13 +26,13 @@ class UserRegistrationForm(UserCreationForm):
             'last_name': 'Last Name',
         }
 
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-            for name in ("password1", "password2"):
-                self.fields[name].widget = forms.PasswordInput(attrs={"class": "form-control"})
-                self.fields[name].help_text = ""
-                self.fields[name].label = "Password" if name == "password1" else "Confirm Password"
+        for name in ("password1", "password2"):
+             self.fields[name].widget = forms.PasswordInput(attrs={"class": "form-control"})
+             self.fields[name].help_text = ""
+             self.fields[name].label = "Password" if name == "password1" else "Confirm Password"
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -56,5 +56,29 @@ class UserLoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(
         attrs={'placeholder': 'qwerty123', 'class': 'Input'}
     ))
+
+
+class UserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            'first_name', 'last_name',
+            'username', 'email',
+            'phone', 'image',
+        ]
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'Input'}),
+            'last_name': forms.TextInput(attrs={'class': 'Input'}),
+            'username': forms.TextInput(attrs={'class': 'Input'}),
+            'email': forms.EmailInput(attrs={'class': 'Input'}),
+            'phone': forms.TextInput(attrs={'class': 'Input'}),
+            # ВАЖНО: обычный FileInput — без "Currently / Clear / Change"
+            'image': forms.FileInput(attrs={'accept': 'image/*', 'id': 'id_avatar'}),
+        }
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']
 
 
